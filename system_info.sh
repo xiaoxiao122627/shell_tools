@@ -1,41 +1,41 @@
 #! /bin/bash
+
+# ------------------------------------
+
 # file: system_info.sh
 # author: Jasyn
-# function:主机基础信息收集脚本（主机名、系统版本、内存、磁盘使用率）
-
+# function: 收集主机基础信息（主机名、系统版本、内存、磁盘使用率等）
 
 
 # 设置时区
 export TZ='Asia/Shanghai'
 
+# 添加日志功能
+LOG_FILE="./system_info.log"
 
-echo "==============================="
-echo "主机基础信息报告"
-echo "报告生成时间 $(date +"%Y-%M-%d %H:%M:%S")"
+log() {
+    echo "$1" | tee -a "$LOG_FILE"
+}
 
-echo "=============================="
+log "==============================="
+log "主机基础信息报告"
+log "报告生成时间 $(date +"%Y-%m-%d %H:%M:%S")"
+log "=============================="
 
-# 1. 主机名
-echo "主机名： $(hostname)"
+log "主机名： $(hostname)"
 
-# 2. 系统版本
-echo "系统版本："
-cat /etc/os-release | head -n 3
+log "系统版本："
+cat /etc/os-release | head -n 3 | tee -a "$LOG_FILE"
 
-# 3. 内存使用情况
-echo "内存使用情况："
-free -h
+log "内存使用情况："
+free -h | tee -a "$LOG_FILE"
 
-# 4. 磁盘使用情况
-echo "磁盘使用情况："
-df -h
+log "磁盘使用情况："
+df -h | tee -a "$LOG_FILE"
 
-# 5. 当前登录用户
-echo "当前登录用户： $(whoami)"
+log "当前登录用户： $(whoami)"
 
-# 6. 系统运行时间
-echo "系统运行时间: $(uptime)"
+log "系统运行时间: $(uptime)"
 
-
-echo "==============================="
-echo "报告生成完毕"
+log "==============================="
+log "报告生成完毕"
